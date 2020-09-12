@@ -370,54 +370,54 @@ its internal structure (the `fruits` and `veggies` modules and
 associated constants). It's almost there except for one keyword missing for
 each constant."""
 
-# MACROS
-
-[[exercises]]
-name = "macros1"
-path = "exercises/macros/macros1.rs"
-mode = "compile"
-hint = """
-When you call a macro, you need to add something special compared to a
-regular function call. If you're stuck, take a look at what's inside
-`my_macro`."""
-
-[[exercises]]
-name = "macros2"
-path = "exercises/macros/macros2.rs"
-mode = "compile"
-hint = """
-Macros don't quite play by the same rules as the rest of Rust, in terms of
-what's available where.
-
-Unlike other things in Rust, the order of "where you define a macro" versus
-"where you use it" actually matters."""
-
-[[exercises]]
-name = "macros3"
-path = "exercises/macros/macros3.rs"
-mode = "compile"
-hint = """
-In order to use a macro outside of its module, you need to do something
-special to the module to lift the macro out into its parent.
-
-The same trick also works on "extern crate" statements for crates that have
-exported macros, if you've seen any of those around."""
-
-[[exercises]]
-name = "macros4"
-path = "exercises/macros/macros4.rs"
-mode = "compile"
-hint = """
-You only need to add a single character to make this compile.
-The way macros are written, it wants to see something between each
-"macro arm", so it can separate them."""
-# TEST 4
-
-[[exercises]]
-name = "quiz4"
-path = "exercises/quiz4.rs"
-mode = "test"
-hint = "No hints this time ;)"
+### # MACROS
+### 
+### [[exercises]]
+### name = "macros1"
+### path = "exercises/macros/macros1.rs"
+### mode = "compile"
+### hint = """
+### When you call a macro, you need to add something special compared to a
+### regular function call. If you're stuck, take a look at what's inside
+### `my_macro`."""
+### 
+### [[exercises]]
+### name = "macros2"
+### path = "exercises/macros/macros2.rs"
+### mode = "compile"
+### hint = """
+### Macros don't quite play by the same rules as the rest of Rust, in terms of
+### what's available where.
+### 
+### Unlike other things in Rust, the order of "where you define a macro" versus
+### "where you use it" actually matters."""
+### 
+### [[exercises]]
+### name = "macros3"
+### path = "exercises/macros/macros3.rs"
+### mode = "compile"
+### hint = """
+### In order to use a macro outside of its module, you need to do something
+### special to the module to lift the macro out into its parent.
+### 
+### The same trick also works on "extern crate" statements for crates that have
+### exported macros, if you've seen any of those around."""
+### 
+### [[exercises]]
+### name = "macros4"
+### path = "exercises/macros/macros4.rs"
+### mode = "compile"
+### hint = """
+### You only need to add a single character to make this compile.
+### The way macros are written, it wants to see something between each
+### "macro arm", so it can separate them."""
+### # TEST 4
+### 
+### [[exercises]]
+### name = "quiz4"
+### path = "exercises/quiz4.rs"
+### mode = "test"
+### hint = "No hints this time ;)"
 
 # MOVE SEMANTICS
 
