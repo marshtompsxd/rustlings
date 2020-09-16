@@ -475,84 +475,101 @@ So the end goal is to:
    - since we're not creating a new vec in `main` anymore, we need to create
      a new vec in `fill_vec`, similarly to the way we did in `main`"""
 
-# ERROR HANDLING
+# Lifetimes
 
 [[exercises]]
-name = "errors1"
-path = "exercises/error_handling/errors1.rs"
+name = "lifetimes1"
+path = "exercises/lifetimes/lifetimes1.rs"
 mode = "test"
 hint = """
-`Err` is one of the variants of `Result`, so what the 2nd test is saying
-is that `generate_nametag_text` should return a `Result` instead of an
-`Option`.
-
-To make this change, you'll need to:
-   - update the return type in the function signature to be a Result<String, String> that
-     could be the variants `Ok(String)` and `Err(String)`
-   - change the body of the function to return `Ok(stuff)` where it currently
-     returns `Some(stuff)`
-   - change the body of the function to return `Err(error message)` where it
-     currently returns `None`
-   - change the first test to expect `Ok(stuff)` where it currently expects
-     `Some(stuff)`."""
+Following the compiler messages is a good strategy. You can get away with the same lifetime for both struct members."""
 
 [[exercises]]
-name = "errors2"
-path = "exercises/error_handling/errors2.rs"
-mode = "test"
+name = "lifetimes2"
+path = "exercises/lifetimes/lifetimes2.rs"
+mode = "compile"
 hint = """
-One way to handle this is using a `match` statement on
-`item_quantity.parse::<i32>()` where the cases are `Ok(something)` and
-`Err(something)`. This pattern is very common in Rust, though, so there's
-a `?` operator that does pretty much what you would make that match statement
-do for you! Take a look at this section of the Error Handling chapter:
-https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator
-and give it a try!"""
+This is an example where the compiler is confused. You need to help by telling it that there are two lifetimes in 
+`take_two_return_one` which are not the same."""
 
-[[exercises]]
-name = "errors3"
-path = "exercises/error_handling/errors3.rs"
-mode = "test"
-hint = """
-If other functions can return a `Result`, why shouldn't `main`?"""
-
-[[exercises]]
-name = "errorsn"
-path = "exercises/error_handling/errorsn.rs"
-mode = "test"
-hint = """
-First hint: To figure out what type should go where the ??? is, take a look
-at the test helper function `test_with_str`, since it returns whatever
-`read_and_validate` returns and `test_with_str` has its signature fully
-specified.
-
-
-Next hint: There are three places in `read_and_validate` that we call a
-function that returns a `Result` (that is, the functions might fail).
-Apply the `?` operator on those calls so that we return immediately from
-`read_and_validate` if those function calls fail.
-
-
-Another hint: under the hood, the `?` operator calls `From::from`
-on the error value to convert it to a boxed trait object, a Box<dyn error::Error>,
-which is polymorphic-- that means that lots of different kinds of errors
-can be returned from the same function because all errors act the same
-since they all implement the `error::Error` trait.
-Check out this section of the book:
-https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator
-
-
-Another another hint: Note that because the `?` operator returns
-the *unwrapped* value in the `Ok` case, if we want to return a `Result` from
-`read_and_validate` for *its* success case, we'll have to rewrap a value
-that we got from the return value of a `?`ed call in an `Ok`-- this will
-look like `Ok(something)`.
-
-
-Another another another hint: `Result`s must be "used", that is, you'll
-get a warning if you don't handle a `Result` that you get in your
-function. Read more about that in the `std::result` module docs:
-https://doc.rust-lang.org/std/result/#results-must-be-used"""
+### # ERROR HANDLING
+### 
+### [[exercises]]
+### name = "errors1"
+### path = "exercises/error_handling/errors1.rs"
+### mode = "test"
+### hint = """
+### `Err` is one of the variants of `Result`, so what the 2nd test is saying
+### is that `generate_nametag_text` should return a `Result` instead of an
+### `Option`.
+### 
+### To make this change, you'll need to:
+   ### - update the return type in the function signature to be a Result<String, String> that
+     ### could be the variants `Ok(String)` and `Err(String)`
+   ### - change the body of the function to return `Ok(stuff)` where it currently
+     ### returns `Some(stuff)`
+   ### - change the body of the function to return `Err(error message)` where it
+     ### currently returns `None`
+   ### - change the first test to expect `Ok(stuff)` where it currently expects
+     ### `Some(stuff)`."""
+### 
+### [[exercises]]
+### name = "errors2"
+### path = "exercises/error_handling/errors2.rs"
+### mode = "test"
+### hint = """
+### One way to handle this is using a `match` statement on
+### `item_quantity.parse::<i32>()` where the cases are `Ok(something)` and
+### `Err(something)`. This pattern is very common in Rust, though, so there's
+### a `?` operator that does pretty much what you would make that match statement
+### do for you! Take a look at this section of the Error Handling chapter:
+### https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator
+### and give it a try!"""
+### 
+### [[exercises]]
+### name = "errors3"
+### path = "exercises/error_handling/errors3.rs"
+### mode = "test"
+### hint = """
+### If other functions can return a `Result`, why shouldn't `main`?"""
+### 
+### [[exercises]]
+### name = "errorsn"
+### path = "exercises/error_handling/errorsn.rs"
+### mode = "test"
+### hint = """
+### First hint: To figure out what type should go where the ??? is, take a look
+### at the test helper function `test_with_str`, since it returns whatever
+### `read_and_validate` returns and `test_with_str` has its signature fully
+### specified.
+### 
+### 
+### Next hint: There are three places in `read_and_validate` that we call a
+### function that returns a `Result` (that is, the functions might fail).
+### Apply the `?` operator on those calls so that we return immediately from
+### `read_and_validate` if those function calls fail.
+### 
+### 
+### Another hint: under the hood, the `?` operator calls `From::from`
+### on the error value to convert it to a boxed trait object, a Box<dyn error::Error>,
+### which is polymorphic-- that means that lots of different kinds of errors
+### can be returned from the same function because all errors act the same
+### since they all implement the `error::Error` trait.
+### Check out this section of the book:
+### https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator
+### 
+### 
+### Another another hint: Note that because the `?` operator returns
+### the *unwrapped* value in the `Ok` case, if we want to return a `Result` from
+### `read_and_validate` for *its* success case, we'll have to rewrap a value
+### that we got from the return value of a `?`ed call in an `Ok`-- this will
+### look like `Ok(something)`.
+### 
+### 
+### Another another another hint: `Result`s must be "used", that is, you'll
+### get a warning if you don't handle a `Result` that you get in your
+### function. Read more about that in the `std::result` module docs:
+### https://doc.rust-lang.org/std/result/#results-must-be-used"""
 
 # OPTIONS / RESULTS
 
@@ -596,96 +613,96 @@ hint = """
 It should be doing some checking, returning an `Err` result if those checks fail, and only
 returning an `Ok` result if those checks determine that everything is... okay :)"""
 
-#  CLIPPY
-
-[[exercises]]
-name = "clippy1"
-path = "exercises/clippy/clippy1.rs"
-mode = "clippy"
-hint = """
-Floating point calculations are usually imprecise, so asking if two values are exactly equal is asking for trouble"""
-
-[[exercises]]
-name = "clippy2"
-path = "exercises/clippy/clippy2.rs"
-mode = "clippy"
-hint = """
-`for` loops over Option values are more clearly expressed as an `if let`"""
-
-# STANDARD LIBRARY TYPES
-
-[[exercises]]
-name = "box1"
-path = "exercises/standard_library_types/box1.rs"
-mode = "test"
-hint = """
-Step 1
-The compiler's message should help: since we cannot store the value of the actual type
-when working with recursive types, we need to store a reference (pointer) to its value.
-We should, therefore, place our `List` inside a `Box`. More details in the book here:
-https://doc.rust-lang.org/book/ch15-01-box.html#enabling-recursive-types-with-boxes
-
-Step 2
-Creating an empty list should be fairly straightforward (hint: peek at the assertions).
-For a non-empty list keep in mind that we want to use our Cons "list builder".
-Although the current list is one of integers (i32), feel free to change the definition
-and try other types!
-"""
-
-[[exercises]]
-name = "arc1"
-path = "exercises/standard_library_types/arc1.rs"
-mode = "compile"
-hint = """
-Make `shared_numbers` be an `Arc` from the numbers vector. Then, in order
-to avoid creating a copy of `numbers`, you'll need to create `child_numbers`
-inside the loop but still in the main thread.
-
-`child_numbers` should be a clone of the Arc of the numbers instead of a
-thread-local copy of the numbers."""
-
-[[exercises]]
-name = "iterators2"
-path = "exercises/standard_library_types/iterators2.rs"
-mode = "test"
-hint = """
-Step 1
-You need to call something on `first` before it can be collected
-Currently its type is `char`. Have a look at the methods that are available on that type:
-https://doc.rust-lang.org/std/primitive.char.html
-
-
-Step 2
-First you'll need to turn the Vec into an iterator
-Then you'll need to apply your function unto each item in the vector
-P.s. Don't forget to collect() at the end!
-
-
-Step 3.
-This is very similar to the previous test. The only real change is that you will need to
-alter the type that collect is coerced into. For a bonus you could try doing this with a
-turbofish"""
-
-[[exercises]]
-name = "iterators3"
-path = "exercises/standard_library_types/iterators3.rs"
-mode = "test"
-hint = """
-Minor hint: In each of the two cases in the match in main, you can create x with either
-a 'turbofish' or by hinting the type of x to the compiler. You may try both.
-
-Major hint: Have a look at the Iter trait and at the explanation of its collect function.
-Especially the part about Result is interesting."""
-
-[[exercises]]
-name = "iterators4"
-path = "exercises/standard_library_types/iterators4.rs"
-mode = "test"
-hint = """
-In an imperative language, you might write a for loop that updates 
-a mutable variable. Or, you might write code utilizing recursion 
-and a match clause. In Rust you can take another functional
-approach, computing the factorial elegantly with ranges and iterators."""
+### #  CLIPPY
+### 
+### [[exercises]]
+### name = "clippy1"
+### path = "exercises/clippy/clippy1.rs"
+### mode = "clippy"
+### hint = """
+### Floating point calculations are usually imprecise, so asking if two values are exactly equal is asking for trouble"""
+### 
+### [[exercises]]
+### name = "clippy2"
+### path = "exercises/clippy/clippy2.rs"
+### mode = "clippy"
+### hint = """
+### `for` loops over Option values are more clearly expressed as an `if let`"""
+### 
+### # STANDARD LIBRARY TYPES
+### 
+### [[exercises]]
+### name = "box1"
+### path = "exercises/standard_library_types/box1.rs"
+### mode = "test"
+### hint = """
+### Step 1
+### The compiler's message should help: since we cannot store the value of the actual type
+### when working with recursive types, we need to store a reference (pointer) to its value.
+### We should, therefore, place our `List` inside a `Box`. More details in the book here:
+### https://doc.rust-lang.org/book/ch15-01-box.html#enabling-recursive-types-with-boxes
+### 
+### Step 2
+### Creating an empty list should be fairly straightforward (hint: peek at the assertions).
+### For a non-empty list keep in mind that we want to use our Cons "list builder".
+### Although the current list is one of integers (i32), feel free to change the definition
+### and try other types!
+### """
+### 
+### [[exercises]]
+### name = "arc1"
+### path = "exercises/standard_library_types/arc1.rs"
+### mode = "compile"
+### hint = """
+### Make `shared_numbers` be an `Arc` from the numbers vector. Then, in order
+### to avoid creating a copy of `numbers`, you'll need to create `child_numbers`
+### inside the loop but still in the main thread.
+### 
+### `child_numbers` should be a clone of the Arc of the numbers instead of a
+### thread-local copy of the numbers."""
+### 
+### [[exercises]]
+### name = "iterators2"
+### path = "exercises/standard_library_types/iterators2.rs"
+### mode = "test"
+### hint = """
+### Step 1
+### You need to call something on `first` before it can be collected
+### Currently its type is `char`. Have a look at the methods that are available on that type:
+### https://doc.rust-lang.org/std/primitive.char.html
+### 
+### 
+### Step 2
+### First you'll need to turn the Vec into an iterator
+### Then you'll need to apply your function unto each item in the vector
+### P.s. Don't forget to collect() at the end!
+### 
+### 
+### Step 3.
+### This is very similar to the previous test. The only real change is that you will need to
+### alter the type that collect is coerced into. For a bonus you could try doing this with a
+### turbofish"""
+### 
+### [[exercises]]
+### name = "iterators3"
+### path = "exercises/standard_library_types/iterators3.rs"
+### mode = "test"
+### hint = """
+### Minor hint: In each of the two cases in the match in main, you can create x with either
+### a 'turbofish' or by hinting the type of x to the compiler. You may try both.
+### 
+### Major hint: Have a look at the Iter trait and at the explanation of its collect function.
+### Especially the part about Result is interesting."""
+### 
+### [[exercises]]
+### name = "iterators4"
+### path = "exercises/standard_library_types/iterators4.rs"
+### mode = "test"
+### hint = """
+### In an imperative language, you might write a for loop that updates 
+### a mutable variable. Or, you might write code utilizing recursion 
+### and a match clause. In Rust you can take another functional
+### approach, computing the factorial elegantly with ranges and iterators."""
 
 # TRAITS
 
@@ -782,43 +799,43 @@ If you've learned from the sample solutions, I encourage you to come
 back to this exercise and try it again in a few days to reinforce
 what you've learned :)"""
 
-# TYPE CONVERSIONS
-
-[[exercises]]
-name = "using_as"
-path = "exercises/conversions/using_as.rs"
-mode = "compile"
-hint = """
-Use the `as` operator to cast one of the operands in the last line of the
-`average` function into the expected return type."""
-
-[[exercises]]
-name = "from_into"
-path = "exercises/conversions/from_into.rs"
-mode = "test"
-hint = """
-Follow the steps provided right before the `From` implementation"""
-
-[[exercises]]
-name = "try_from_into"
-path = "exercises/conversions/try_from_into.rs"
-mode = "test"
-hint = """
-Follow the steps provided right before the `TryFrom` implementation.
-You can also use the example at https://doc.rust-lang.org/std/convert/trait.TryFrom.html"""
-
-[[exercises]]
-name = "as_ref_mut"
-path = "exercises/conversions/as_ref_mut.rs"
-mode = "test"
-hint = """
-Add AsRef<str> as a trait bound to the functions."""
-
-[[exercises]]
-name = "from_str"
-path = "exercises/conversions/from_str.rs"
-mode = "test"
-hint = """
-The implementation of FromStr should return an Ok with a Person object,
-or an Err with a string if the string is not valid.
-This is almost like the `try_from_into` exercise."""
+### # TYPE CONVERSIONS
+### 
+### [[exercises]]
+### name = "using_as"
+### path = "exercises/conversions/using_as.rs"
+### mode = "compile"
+### hint = """
+### Use the `as` operator to cast one of the operands in the last line of the
+### `average` function into the expected return type."""
+### 
+### [[exercises]]
+### name = "from_into"
+### path = "exercises/conversions/from_into.rs"
+### mode = "test"
+### hint = """
+### Follow the steps provided right before the `From` implementation"""
+### 
+### [[exercises]]
+### name = "try_from_into"
+### path = "exercises/conversions/try_from_into.rs"
+### mode = "test"
+### hint = """
+### Follow the steps provided right before the `TryFrom` implementation.
+### You can also use the example at https://doc.rust-lang.org/std/convert/trait.TryFrom.html"""
+### 
+### [[exercises]]
+### name = "as_ref_mut"
+### path = "exercises/conversions/as_ref_mut.rs"
+### mode = "test"
+### hint = """
+### Add AsRef<str> as a trait bound to the functions."""
+### 
+### [[exercises]]
+### name = "from_str"
+### path = "exercises/conversions/from_str.rs"
+### mode = "test"
+### hint = """
+### The implementation of FromStr should return an Ok with a Person object,
+### or an Err with a string if the string is not valid.
+### This is almost like the `try_from_into` exercise."""
