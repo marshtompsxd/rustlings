@@ -801,6 +801,35 @@ If you've learned from the sample solutions, I encourage you to come
 back to this exercise and try it again in a few days to reinforce
 what you've learned :)"""
 
+[[exercises]]
+name = "threads2"
+path = "exercises/threads/threads2.rs"
+mode = "compile"
+hint = """
+In the comments for map_with_threads it says you need to make
+sure `input` lives as long as the threads can access it. In Rust
+this is usually achieved using an Arc:
+
+`Arc` is an Atomic Reference Counted pointer that allows safe, shared access
+to **immutable** data. But we want to *change* the number of `jobs_completed`
+so we'll need to also use another type that will only allow one thread to
+mutate the data at a time. Take a look at this section of the book:
+https://doc.rust-lang.org/book/ch16-03-shared-state.html#atomic-reference-counting-with-arct
+and keep reading if you'd like more hints :)
+
+
+For mutual exclusion you can wrap each element in a Mutex!
+https://doc.rust-lang.org/std/sync/struct.Mutex.html
+Keep reading if you'd like more hints :)
+
+So your new type signature can look like this:
+fn map_with_threads<F>(input: Arc<Vec<Mutex<usize>>>, fun: F) -> Arc<Vec<Mutex<usize>>>
+
+You'll have to change how you access and overwrite elements that are wrapped in a Mutex.
+The quoted documentation on Mutex (above) should give you an idea how to do that.
+"""
+
+
 ### # TYPE CONVERSIONS
 ### 
 ### [[exercises]]

@@ -27,13 +27,18 @@ where
     F: Copy + Send + 'static,
     F: Fn(usize) -> usize
 {
-    assert!(input.len() / 4 == 0, "Input length is divisible by four");
+    assert!(input.len() % 4 == 0, "Input length is divisible by four");
     let per_thread_chunk = input.len() / 4;
     let mut handles: Vec<_> = Default::default();
 
     // We spawn 4 threads to work on our `input` in parallel:
     for tid in 0..4 {
         // We give each thread read access to input by cloning it:
+        // (mini hint: If the compiler tells you that this should be `mut`, go for it -- but careful
+        // it is unfortunately misleading you... The code will compile, but fail the assert in main:
+        // that's because it ends up copying the vector 4 times and each thread would work
+        // on it's own (private) copy and the original `input` would never reflect
+        // the changes -- that's not what we want for our `map_with_threads`)
         let input = input.clone();
 
         // We spawn the actual thread (which returns a handle we later use to
@@ -67,5 +72,5 @@ fn main() {
     // If you change the type signature of `map_with_threads`,
     // you'll also have to initialize the `elements` variable differently:
     let elements = vec![1,2,3,4];
-    println!("{:?}", map_with_threads(elements, |x| x*2));
+    assert_eq!(map_with_threads(elements, |x| x*2), vec![2, 4, 6, 8]);
 }
