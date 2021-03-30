@@ -829,6 +829,33 @@ You'll have to change how you access and overwrite elements that are wrapped in 
 The quoted documentation on Mutex (above) should give you an idea how to do that.
 """
 
+[[exercises]]
+name = "threads3"
+path = "exercises/threads/threads3.rs"
+mode = "compile"
+hint = """
+Why is the order random?
+The execution of the worker threads is not deterministic. For example,
+one thread might not run for a while and then send back a couple elements 
+that have been buffered at once. So even though all workers share the same
+FIFO channel to send results back, the order in which they get sent is 
+not guaranteed.
+
+keep reading if you'd like more hints!
+
+What can I do about it?
+One way to fix this is to send more information to the worker and back
+to the main thread. Think about what else you need to preserve the order?
+
+keep reading if you'd like more hints!
+
+How about sending the index of the element in `input` too?
+
+keep reading if you'd like more hints!
+
+The message channels can send and receive arbitrary types. You can try making a
+struct that contains element and index. Or easier, just send a tuple "(idx, element)".
+"""
 
 ### # TYPE CONVERSIONS
 ### 

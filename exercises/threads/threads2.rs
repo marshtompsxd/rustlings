@@ -1,5 +1,6 @@
 // threads2.rs
-// Make this compile! Execute `rustlings hint threads2` for hints :)
+// Finish the `map_with_threads` implementation using Mutex and Arc! 
+// Execute `rustlings hint threads2` for hints :)
 
 // I AM NOT DONE
 
@@ -16,7 +17,7 @@ use std::sync::Arc;
 /// The easiest way to achieve this is if you change the type for argument `input`,
 /// and also the return type of the function `map_with_threads`.
 /// Remember that you need to "prove" these two things to the rust type-system:
-/// a) Your `input` needs to live (at least) as long as all threads have access to it.
+/// a) Your `input` needs to be alive (at least) as long as all threads that have access to it.
 /// b) Accessing the invidivual elements of input should ensure mutual exclusion.
 ///
 /// You'll probably also have to rewrite the
