@@ -65,7 +65,7 @@ where
         handle.join().unwrap();
     }
 
-    // We return the (now hopefully modified) input as our outout
+    // We return the (now hopefully modified) input as our output
     input
 }
 
