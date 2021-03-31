@@ -73,5 +73,12 @@ fn main() {
     // If you change the type signature of `map_with_threads`,
     // you'll also have to initialize the `elements` variable differently:
     let elements = vec![1,2,3,4];
-    assert_eq!(map_with_threads(elements, |x| x*2), vec![2, 4, 6, 8]);
+    let output = map_with_threads(elements, |x| x*2);
+
+    // Verify the expected output:
+    let expected = vec![2,4,6,8]; // The expected result
+    for idx in 0..4 {
+        // You'll likely have to change how you access `output` elements here too:
+        assert_eq!(output[idx], expected[idx]);
+    }
 }
